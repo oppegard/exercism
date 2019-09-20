@@ -1,4 +1,3 @@
-export function twoFer(name) {
-  if (!name) name = "you";
+export function twoFer(name = "you") {
   return `One for ${name}, one for me.`;
 }
