@@ -1,2 +1,1 @@
-fun twofer(name: String) = "One for $name, one for me."
-fun twofer() = twofer("you")
+fun twofer(name: String = "you") = "One for $name, one for me."
