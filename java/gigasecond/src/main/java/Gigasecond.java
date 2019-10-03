@@ -1,13 +1,13 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 class Gigasecond {
 
+    private static Integer GIGA_SECOND = 1_000_000_000;
     private final LocalDateTime moment;
 
     Gigasecond(LocalDate moment) {
-        this.moment = LocalDateTime.of(moment, LocalTime.MIDNIGHT);
+        this.moment = moment.atStartOfDay();
     }
 
     Gigasecond(LocalDateTime moment) {
@@ -15,7 +15,7 @@ class Gigasecond {
     }
 
     LocalDateTime getDateTime() {
-        return moment.plusSeconds(1_000_000_000);
+        return moment.plusSeconds(GIGA_SECOND);
     }
 
 }
