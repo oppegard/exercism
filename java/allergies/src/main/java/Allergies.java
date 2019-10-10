@@ -1,10 +1,27 @@
-/*
+import java.util.ArrayList;
+import java.util.List;
 
-Since this exercise has a difficulty of > 4 it doesn't come
-with any starter implementation.
-This is so that you get to practice creating classes and methods
-which is an important part of programming in Java.
+public class Allergies {
+    private final int allergensBitmask;
+    private final List<Allergen> allergenList;
 
-Please remove this comment when submitting your solution.
+    Allergies(int allergensBitmask) {
+        this.allergensBitmask = allergensBitmask;
+        this.allergenList = generateList();
+    }
 
-*/
+    private List<Allergen> generateList() {
+        ArrayList<Allergen> allergenList = new ArrayList<>();
+        for (Allergen allergen : Allergen.values())
+            if (isAllergicTo(allergen)) allergenList.add(allergen);
+        return allergenList;
+    }
+
+    public List<Allergen> getList() {
+        return this.allergenList;
+    }
+
+    public boolean isAllergicTo(Allergen allergen) {
+        return (allergen.getScore() & this.allergensBitmask) != 0;
+    }
+}
