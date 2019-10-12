@@ -2,7 +2,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 class RomanNumeral {
-    private final static LinkedHashMap<Integer, String> orderedNumeralMappings = new LinkedHashMap<>() {
+    private final static LinkedHashMap<Integer, String> orderedArabicToRomanMappings = new LinkedHashMap<>() {
         {
             put(1000, "M" );
             put( 900, "CM");
@@ -21,11 +21,11 @@ class RomanNumeral {
     };
     private String romanNumeral = "";
 
-    RomanNumeral(int value) {
-        for (Map.Entry<Integer, String> entry : orderedNumeralMappings.entrySet()) {
-            while (value - entry.getKey() >= 0) {
-                value = value - entry.getKey();
-                this.romanNumeral += entry.getValue();
+    RomanNumeral(int arabicValue) {
+        for (Map.Entry<Integer, String> arabicToRoman : orderedArabicToRomanMappings.entrySet()) {
+            while (arabicValue - arabicToRoman.getKey() >= 0) {
+                arabicValue = arabicValue - arabicToRoman.getKey();
+                this.romanNumeral += arabicToRoman.getValue();
             }
         }
     }
