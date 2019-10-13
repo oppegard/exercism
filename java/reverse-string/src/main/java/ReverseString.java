@@ -1,8 +1,9 @@
 class ReverseString {
 
     String reverse(String inputString) {
-        StringBuilder s = new StringBuilder(inputString);
-        return s.reverse().toString();
+        String reversed = "";
+        for (Character c : inputString.toCharArray()) reversed = c + reversed;
+        return reversed;
     }
 
 }
