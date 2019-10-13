@@ -5,11 +5,10 @@ class IsbnVerifier {
         if (!validInput(stringToVerify)) return false;
 
         int dividend = 0;
-        int counter = 0;
-        for (int multiplier = 10; multiplier > 0; multiplier--) {
-            int charToDigit = Character.getNumericValue(stringToVerify.charAt(counter++));
-            if (charToDigit == Character.getNumericValue('X')) charToDigit = 10;
-            dividend += charToDigit * multiplier;
+        int multiplier = 10;
+        for (Character c : stringToVerify.toCharArray()) {
+            int charToNumeric = c == 'X' ? 10 : Character.getNumericValue(c);
+            dividend += charToNumeric * multiplier--;
         }
 
         return (dividend % 11 == 0);
