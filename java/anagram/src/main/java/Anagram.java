@@ -1,26 +1,14 @@
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 class Anagram {
-    private final String anagram;
+    private final Predicate<String> notSameWord;
+    private final Predicate<String> isMatch;
 
     Anagram(String anagram) {
-        this.anagram = anagram;
-    }
-
-    List<String> match(List<String> words) {
-        return words.stream()
-            .filter(this::isNotSameWordAsAnagram)
-            .filter(this::isAnagram)
-            .collect(Collectors.toList());
-    }
-
-    private boolean isNotSameWordAsAnagram(String word) {
-        return !anagram.equalsIgnoreCase(word);
-    }
-
-    private boolean isAnagram(String word) {
-        return toLowerCaseSorted(word).equals(toLowerCaseSorted(anagram));
+        this.notSameWord = testWord -> !testWord.equalsIgnoreCase(anagram);
+        this.isMatch     = testWord -> toLowerCaseSorted(testWord).equals(toLowerCaseSorted(anagram));
     }
 
     private String toLowerCaseSorted(String string) {
@@ -28,5 +16,12 @@ class Anagram {
             .mapToObj(a -> Character.toString((char) a))
             .sorted()
             .reduce("", (a, b) -> a + b);
+    }
+
+    List<String> match(List<String> words) {
+        return words.stream()
+            .filter(notSameWord)
+            .filter(isMatch)
+            .collect(Collectors.toList());
     }
 }
