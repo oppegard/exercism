@@ -1,15 +1,17 @@
+import java.util.stream.IntStream;
+
 class DifferenceOfSquaresCalculator {
 
+    int computeDifferenceOfSquares(int input) {
+        return computeSquareOfSumTo(input) - computeSumOfSquaresTo(input);
+    }
+
     int computeSquareOfSumTo(int input) {
-        throw new UnsupportedOperationException("Delete this statement and write your own implementation.");
+        int sum = IntStream.rangeClosed(1, input).sum();
+        return sum * sum;
     }
 
     int computeSumOfSquaresTo(int input) {
-        throw new UnsupportedOperationException("Delete this statement and write your own implementation.");
+        return IntStream.rangeClosed(1, input).map(i -> i * i).sum();
     }
-
-    int computeDifferenceOfSquares(int input) {
-        throw new UnsupportedOperationException("Delete this statement and write your own implementation.");
-    }
-
 }
