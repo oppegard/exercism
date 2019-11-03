@@ -6,16 +6,13 @@ import java.util.stream.Collectors;
 class HandshakeCalculator {
 
     List<Signal> calculateHandshake(int number) {
-        List<Signal> secretSignals = Arrays.stream(Signal.values())
-            .filter(signal -> signal.isContainedIn(number))
+        List<Signal> signals = Arrays.stream(Signal.values())
+            .filter(signal -> signal.isMemberOf(number))
             .collect(Collectors.toList());
 
-        if (shouldReverse(number)) Collections.reverse(secretSignals);
-        return secretSignals;
-    }
+        if (signals.remove(Signal.REVERSE)) Collections.reverse(signals);
 
-    private boolean shouldReverse(int number) {
-        return (number & 0b10000) == 0b10000;
+        return signals;
     }
 
 }

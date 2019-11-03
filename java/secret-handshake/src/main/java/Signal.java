@@ -1,9 +1,10 @@
 enum Signal {
 
-               WINK(0b0001),
-       DOUBLE_BLINK(0b0010),
-    CLOSE_YOUR_EYES(0b0100),
-               JUMP(0b1000);
+               WINK(0b00001),
+       DOUBLE_BLINK(0b00010),
+    CLOSE_YOUR_EYES(0b00100),
+               JUMP(0b01000),
+            REVERSE(0b10000);
 
     private int binaryValue;
 
@@ -11,7 +12,7 @@ enum Signal {
         this.binaryValue = binaryValue;
     }
 
-    public boolean isContainedIn(int handshake) {
+    public boolean isMemberOf(int handshake) {
         return (handshake & binaryValue) == binaryValue;
     }
 }
