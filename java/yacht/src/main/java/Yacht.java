@@ -2,6 +2,7 @@ import java.util.stream.IntStream;
 
 class Yacht {
 
+    private static final int ZERO_SCORE = 0;
     private final int sum;
     private final int[] tallys;
     private final YachtCategory yachtCategory;
@@ -14,26 +15,23 @@ class Yacht {
 
     private int[] generateTallys(int[] dice) {
         int[] tallys = new int[6];
-
-        for (int die : dice) {
-            tallys[die - 1] += 1;
-        }
+        for (int die : dice) tallys[die - 1] += 1;
         return tallys;
     }
 
     int score() {
         switch (yachtCategory) {
             case YACHT:
-                return isYacht() ? 50 : 0;
+                return calculateYacht();
             case FULL_HOUSE:
-                return isFullHouse() ? sum : 0;
+                return calculateFullHouse();
             case CHOICE:
-                return sum;
+                return this.sum;
             case FOUR_OF_A_KIND:
                 return calculateFourOfAKind();
             case LITTLE_STRAIGHT:
             case BIG_STRAIGHT:
-                return isStraight(yachtCategory) ? 30 : 0;
+                return calculateStraight(yachtCategory);
             case ONES:
             case TWOS:
             case THREES:
@@ -42,18 +40,18 @@ class Yacht {
             case SIXES:
                 return calculateN(yachtCategory.ordinal());
             default:
-                return 0;
+                return ZERO_SCORE;
         }
     }
 
-    private boolean isYacht() {
+    private int calculateYacht() {
         for (int tally : tallys) {
-            if (tally == 5) return true;
+            if (tally == 5) return 50;
         }
-        return false;
+        return ZERO_SCORE;
     }
 
-    private boolean isFullHouse() {
+    private int calculateFullHouse() {
         boolean foundTwoOfAKind = false;
         boolean foundThreeOfAKind = false;
 
@@ -62,7 +60,7 @@ class Yacht {
             if (tally == 3) foundThreeOfAKind = true;
         }
 
-        return foundTwoOfAKind && foundThreeOfAKind;
+        return (foundTwoOfAKind && foundThreeOfAKind) ? this.sum : ZERO_SCORE;
     }
 
     private int calculateFourOfAKind() {
@@ -70,18 +68,17 @@ class Yacht {
             if (tallys[i] >= 4) return (i + 1) * 4;
         }
 
-        return 0;
+        return ZERO_SCORE;
     }
 
-    private boolean isStraight(YachtCategory yachtCategory) {
-        boolean isStraight = true;
+    private int calculateStraight(YachtCategory yachtCategory) {
         int offset = (yachtCategory == YachtCategory.LITTLE_STRAIGHT) ? 0 : 1;
 
         for (int i = offset; i < 5 + offset; i++) {
-            if (tallys[i] != 1) isStraight = false;
+            if (tallys[i] != 1) return ZERO_SCORE;
         }
 
-        return isStraight;
+        return 30;
     }
 
     private int calculateN(int n) {
