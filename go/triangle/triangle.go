@@ -1,28 +1,62 @@
-// This is a "stub" file.  It's a little start on your solution.
-// It's not a complete solution though; you have to write some code.
-
-// Package triangle should have a package comment that summarizes what it's about.
-// https://golang.org/doc/effective_go.html#commentary
+// Package triangle provides utilities to determine kinds of triangles.
 package triangle
 
+import "math"
 
-// Notice KindFromSides() returns this type. Pick a suitable data type.
-type Kind
+// Kind is a string representation of a triangle type
+type Kind string
 
+// Types of triangles
 const (
-    // Pick values for the following identifiers used by the test program.
-    NaT // not a triangle
-    Equ // equilateral
-    Iso // isosceles
-    Sca // scalene
+	NaT = "not a triangle"
+	Equ = "equilateral"
+	Iso = "isosceles"
+	Sca = "scalene"
 )
 
-// KindFromSides should have a comment documenting it.
+// KindFromSides determines the kind of triangle, given three sides.
 func KindFromSides(a, b, c float64) Kind {
-	// Write some code here to pass the test suite.
-	// Then remove all the stock comments.
-	// They're here to help you get started but they only clutter a finished solution.
-	// If you leave them in, reviewers may protest!
 	var k Kind
+
+	if notTriangle(a, b, c) {
+		k = NaT
+	} else if a == b && b == c {
+		k = Equ
+	} else if a == b || a == c || b == c {
+		k = Iso
+	} else {
+		k = Sca
+	}
 	return k
+}
+
+func notTriangle(a, b, c float64) bool {
+	for _, side := range []float64{a, b, c} {
+		if !validSide(side) {
+			return true
+		}
+	}
+	return inequalTriangle(a, b, c)
+}
+
+var invalidSideCheckers = []func(float64) bool{
+	math.IsNaN,
+	func(f float64) bool { return math.IsInf(f, 0) },
+	func(f float64) bool { return f <= 0 },
+}
+
+func validSide(side float64) bool {
+	for _, invalidSideChecker := range invalidSideCheckers {
+		if invalidSideChecker(side) {
+			return false
+		}
+	}
+	return true
+}
+
+func inequalTriangle(a float64, b float64, c float64) bool {
+	if (a+b < c) || (a+c < b) || (b+c < a) {
+		return true
+	}
+	return false
 }
