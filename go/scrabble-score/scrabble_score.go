@@ -7,21 +7,21 @@ import (
 )
 
 // Score takes a word and returns its Scrabble score.
-func Score(word string) int {
-	var score int
+func Score(word string) (score int) {
 	for _, letter := range word {
 		score += pointValueFor(letter)
 	}
-	return score
+	return
 }
 
-func pointValueFor(r rune) int {
+func pointValueFor(r rune) (points int) {
 	for _, lettersToPoint := range lettersToPoints {
 		if strings.ContainsRune(lettersToPoint.letters, unicode.ToUpper(r)) {
-			return lettersToPoint.points
+			points = lettersToPoint.points
+			break
 		}
 	}
-	return 0
+	return
 }
 
 var lettersToPoints = []struct {
