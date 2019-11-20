@@ -8,17 +8,24 @@ import "strconv"
 func Convert(input int) string {
 	var raindrops string
 
-	if input%3 == 0 {
-		raindrops += "Pling"
+	for _, translation := range translations {
+		if input%translation.number == 0 {
+			raindrops += translation.raindrop
+		}
 	}
-	if input%5 == 0 {
-		raindrops += "Plang"
-	}
-	if input%7 == 0 {
-		raindrops += "Plong"
-	}
+
 	if raindrops == "" {
 		raindrops = strconv.Itoa(input)
 	}
+
 	return raindrops
+}
+
+var translations = []struct {
+	number   int
+	raindrop string
+}{
+	{3, "Pling"},
+	{5, "Plang"},
+	{7, "Plong"},
 }
