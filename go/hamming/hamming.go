@@ -9,10 +9,10 @@ import (
 // Distance calculates the Hamming distance of two strings
 func Distance(a, b string) (int, error) {
 	if len(a) != len(b) {
-		return -1, errors.New("length mismatch")
+		return 0, errors.New("length mismatch")
 	}
 
-	distance := 0
+	var distance int
 	for i, aRune := range a {
 		bRune, _ := utf8.DecodeRuneInString(b[i:])
 		if aRune != bRune {
