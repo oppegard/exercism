@@ -1,49 +1,72 @@
+// Package listops provides basic list operations.
 package listops
 
-type ListOps interface {
-	Append(IntList) IntList
-	Concat([]IntList) IntList
-	Foldl(binFunc, int) int
-	Foldr(binFunc, int) int
-	Filter(predFunc) IntList
-	Length() int
-	Map(unaryFunc) IntList
-	Reverse() IntList
-}
-
+// IntList is a slice of integers, upon which list operations can be performed.
 type IntList []int
 type binFunc func(int, int) int
 type predFunc func(int) bool
 type unaryFunc func(int) int
 
-func (IntList) Append(list IntList) IntList {
-	return []int{}
+// Append is given two lists, adding all items in the second list to the end of the first list.
+func (i IntList) Append(list IntList) IntList {
+	return append(i, list...)
 }
 
-func (IntList) Concat(lists []IntList) IntList {
-	return []int{}
+// Concat is given a series of lists, combining all items in all lists into one flattened list.
+func (i IntList) Concat(lists []IntList) IntList {
+	for _, list := range lists {
+		i = i.Append(list)
+	}
+	return i
 }
 
-func (IntList) Foldl(binFunc2 binFunc, initial int) int {
-	return 0
+// Foldl is given a function, a list, and initial accumulator, which then folds (reduces) each item into the accumulator from the left using `function(accumulator, item)`.
+func (i IntList) Foldl(binFunction binFunc, acc int) int {
+	for _, e := range i {
+		acc = binFunction(acc, e)
+	}
+	return acc
 }
 
-func (IntList) Foldr(binFunc2 binFunc, initial int) int {
-	return 0
+// Foldr is given a function, a list, and an initial accumulator, which then folds (reduces) each item into the accumulator from the right using `function(item, accumulator)`.
+func (i IntList) Foldr(binFunction binFunc, acc int) int {
+	for _, item := range i.Reverse() {
+		acc = binFunction(item, acc)
+	}
+	return acc
 }
 
-func (IntList) Filter(predicate predFunc) IntList {
-	return []int{}
+// Filter is given a predicate and a list, returning the list of all items for which `predicate(item)` is True.
+func (i IntList) Filter(predicate predFunc) IntList {
+	filtered := make(IntList, 0)
+	for _, item := range i {
+		if predicate(item) {
+			filtered = append(filtered, item)
+		}
+	}
+	return filtered
 }
 
-func (IntList) Length() (length int) {
-	return
+// Length is given a list, returning the total number of items within it.
+func (i IntList) Length() (length int) {
+	return len(i)
 }
 
-func (IntList) Map(unaryFunc2 unaryFunc) IntList {
-	return []int{}
+// Map is given a function and a list, returning the list of the results of applying `function(item)` on all items.
+func (i IntList) Map(unaryFunction unaryFunc) IntList {
+	mapped := make(IntList, i.Length(), i.Length())
+	for n, item := range i {
+		mapped[n] = unaryFunction(item)
+	}
+	return mapped
 }
 
-func (IntList) Reverse() IntList {
-	return []int{}
+// Reverse is given a list, and returns a list with all the original items, but in reversed order.
+func (i IntList) Reverse() IntList {
+	iLen := i.Length()
+	reversed := make(IntList, iLen, iLen)
+	for n, item := range i {
+		reversed[iLen-1-n] = item
+	}
+	return reversed
 }
