@@ -8,8 +8,19 @@ type predFunc func(int) bool
 type unaryFunc func(int) int
 
 // Append is given two lists, adding all items in the second list to the end of the first list.
-func (i IntList) Append(list IntList) IntList {
-	return append(i, list...)
+func (i IntList) Append(list IntList) (newList IntList) {
+	iLen := i.Length()
+	newListSize := iLen + list.Length()
+	newList = make(IntList, newListSize, newListSize)
+
+	for n, item := range i {
+		newList[n] = item
+	}
+
+	for n, item := range list {
+		newList[iLen+n] = item
+	}
+	return
 }
 
 // Concat is given a series of lists, combining all items in all lists into one flattened list.
@@ -41,7 +52,7 @@ func (i IntList) Filter(predicate predFunc) IntList {
 	filtered := make(IntList, 0)
 	for _, item := range i {
 		if predicate(item) {
-			filtered = append(filtered, item)
+			filtered = filtered.Append(IntList{item})
 		}
 	}
 	return filtered
@@ -49,7 +60,10 @@ func (i IntList) Filter(predicate predFunc) IntList {
 
 // Length is given a list, returning the total number of items within it.
 func (i IntList) Length() (length int) {
-	return len(i)
+	for range i {
+		length++
+	}
+	return
 }
 
 // Map is given a function and a list, returning the list of the results of applying `function(item)` on all items.
