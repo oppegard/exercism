@@ -1,15 +1,18 @@
-// This is a "stub" file.  It's a little start on your solution.
-// It's not a complete solution though; you have to write some code.
-
-// Package proverb should have a package comment that summarizes what it's about.
-// https://golang.org/doc/effective_go.html#commentary
+// Package proverb generates a wide range of pithy proverbs (currently one).
 package proverb
 
-// Proverb should have a comment documenting it.
-func Proverb(rhyme []string) []string {
-	// Write some code here to pass the test suite.
-	// Then remove all the stock comments.
-	// They're here to help you get started but they only clutter a finished solution.
-	// If you leave them in, reviewers may protest!
-	return []string{}
+import "fmt"
+
+// Proverb returns the "For Want of a Nail" proverb.
+func Proverb(rhyme []string) (result []string) {
+	numWords := len(rhyme)
+	result = make([]string, numWords)
+
+	for i := 0; i < numWords-1; i++ {
+		result[i] = fmt.Sprintf("For want of a %s the %s was lost.", rhyme[i], rhyme[i+1])
+	}
+	if numWords > 0 {
+		result[numWords-1] = fmt.Sprintf("And all for the want of a %s.", rhyme[0])
+	}
+	return
 }
