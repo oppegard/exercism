@@ -6,6 +6,16 @@ import (
 	"unicode"
 )
 
+var lettersToPoints = map[string]int{
+	"AEIOULNRST": 1,
+	"DG":         2,
+	"BCMP":       3,
+	"FHVWY":      4,
+	"K":          5,
+	"JX":         8,
+	"QZ":         10,
+}
+
 // Score takes a word and returns its Scrabble score.
 func Score(word string) (score int) {
 	for _, letter := range word {
@@ -14,25 +24,11 @@ func Score(word string) (score int) {
 	return
 }
 
-func pointValueFor(r rune) (points int) {
-	for _, lettersToPoint := range lettersToPoints {
-		if strings.ContainsRune(lettersToPoint.letters, unicode.ToUpper(r)) {
-			points = lettersToPoint.points
-			break
+func pointValueFor(r rune) int {
+	for letters, pointValue := range lettersToPoints {
+		if strings.ContainsRune(letters, unicode.ToUpper(r)) {
+			return pointValue
 		}
 	}
-	return
-}
-
-var lettersToPoints = []struct {
-	letters string
-	points  int
-}{
-	{"AEIOULNRST", 1},
-	{"DG", 2},
-	{"BCMP", 3},
-	{"FHVWY", 4},
-	{"K", 5},
-	{"JX", 8},
-	{"QZ", 10},
+	return 0
 }
