@@ -1,9 +1,6 @@
 package dna
 
-import (
-	"errors"
-	"strings"
-)
+import "fmt"
 
 // Histogram is a mapping from nucleotide to its count in given DNA.
 type Histogram map[rune]int
@@ -13,16 +10,15 @@ type DNA string
 
 // Counts generates a histogram of valid nucleotides in the given DNA.
 // Returns an error if d contains an invalid nucleotide.
-func (d DNA) Counts() (h Histogram, err error) {
-	h = Histogram{'A': 0, 'C': 0, 'G': 0, 'T': 0}
-	var invalidNucleoutides = string(d)
+func (d DNA) Counts() (Histogram, error) {
+	h := Histogram{'A': 0, 'C': 0, 'G': 0, 'T': 0}
 
-	for nucleotide := range h {
-		h[nucleotide] = strings.Count(string(d), string(nucleotide))
-		invalidNucleoutides = strings.ReplaceAll(invalidNucleoutides, string(nucleotide), "")
+	for _, nucleotide := range d {
+		if _, present := h[nucleotide]; !present {
+			return nil, fmt.Errorf("invalid nucleotide: %v", nucleotide)
+		}
+		h[nucleotide]++
 	}
-	if len(invalidNucleoutides) > 0 {
-		err = errors.New("strand contains invalid nucleotides")
-	}
-	return
+
+	return h, nil
 }
