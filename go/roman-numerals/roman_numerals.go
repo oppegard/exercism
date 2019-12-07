@@ -21,8 +21,8 @@ var arabicToRoman = map[int]string{
 	1:    "I",
 }
 
-// Can't `range` through the keys of a map in the order they were defined,
-// so use this slice to define the descending order of values to iterate over.
+// Can't `range` through the keys of the arabicToRoman map in the order they were
+// defined, so use this slice to define the order of values to iterate over.
 var descendingArabic = []int{
 	1000,
 	900,
@@ -44,20 +44,13 @@ func ToRomanNumeral(arabic int) (roman string, err error) {
 		return "", errors.New("invalid input")
 	}
 
-	for arabic > 0 {
-		for _, i := range descendingArabic {
-			if q, r := divmod(arabic, i); q == 0 {
-				continue
-			} else {
-				roman += strings.Repeat(arabicToRoman[i], q)
-				arabic = r
-			}
+	for _, i := range descendingArabic {
+		if quotient := arabic / i; quotient == 0 {
+			continue
+		} else {
+			roman += strings.Repeat(arabicToRoman[i], quotient)
+			arabic = arabic % i
 		}
 	}
-	return
-}
-
-func divmod(numerator, denominator int) (quotient, remainder int) {
-	quotient, remainder = numerator/denominator, numerator%denominator
 	return
 }
