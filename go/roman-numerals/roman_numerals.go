@@ -32,9 +32,7 @@ func ToRomanNumeral(input int) (result string, err error) {
 	}
 
 	for _, mapping := range mappings {
-		if quotient := input / mapping.arabic; quotient == 0 {
-			continue
-		} else {
+		if quotient := input / mapping.arabic; quotient != 0 {
 			result += strings.Repeat(mapping.roman, quotient)
 			input = input % mapping.arabic
 		}
