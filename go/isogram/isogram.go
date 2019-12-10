@@ -12,7 +12,7 @@ func IsIsogram(input string) bool {
 			continue
 		}
 		lowercase := unicode.ToLower(r)
-		if _, present := state[lowercase]; present {
+		if state[lowercase] {
 			return false
 		}
 		state[lowercase] = true
