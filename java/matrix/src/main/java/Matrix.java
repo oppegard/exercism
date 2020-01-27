@@ -3,8 +3,13 @@ class Matrix {
     private int[][] matrix;
 
     Matrix(String matrixAsString) {
+        matrix = parseMatrix(matrixAsString);
+    }
+
+    int[][] parseMatrix(String matrixAsString) {
         String[] rows = matrixAsString.split("\n");
         int columnCount = rows[0].split(" ").length;
+        int[][] matrix;
         matrix = new int[rows.length][columnCount];
 
         for (int i = 0; i < rows.length; i++) {
@@ -13,6 +18,7 @@ class Matrix {
                 matrix[i][j] = Integer.parseInt(values[j]);
             }
         }
+        return matrix;
     }
 
     int[] getRow(int rowNumber) {
